@@ -22,6 +22,14 @@ namespace FootballLeagueManager.API.Controllers
             _jwtService = jwtService;
         }
 
+        [HttpGet("admin-exists")]
+        public async Task<IActionResult> AdminExists()
+        {
+            var exists = await _authService.AdminExistsAsync();
+
+            return Ok(exists);
+        }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {

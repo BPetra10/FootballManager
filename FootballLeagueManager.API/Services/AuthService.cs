@@ -17,6 +17,11 @@ namespace FootballLeagueManager.API.Services
             _dbContext = dbContext;
         }
 
+        public async Task<bool> AdminExistsAsync()
+        {
+            return await _dbContext.Users
+                .AnyAsync(u => u.Role == UserRole.Admin);
+        }
         public async Task RegisterAsync(RegisterRequest request)
         {
             var normalizedUsername =
@@ -37,12 +42,19 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("User already exists.");
             }
 
+            var adminExists = await _dbContext.Users
+                .AnyAsync(u => u.Role == UserRole.Admin);
+
+            var role = adminExists
+                ? UserRole.TeamManager
+                : UserRole.Admin;
+
             var user = new User
             {
                 Id = Guid.NewGuid(),
                 Username = request.Username.Trim(),
                 Email = normalizedEmail,
-                Role = UserRole.TeamManager
+                Role = role
             };
 
             user.PasswordHash =
