@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/Auth/LoginPage";
+import RegisterPage from "./pages/Auth/RegisterPage";
 import LeaguePage from "./pages/LeaguePage";
 import TeamPage from "./pages/TeamPage";
 import PlayerPage from "./pages/PlayerPage";
-import DashboardPage from "./pages/DashboardPage";
+import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Header from "./components/layout/Header";
 
@@ -28,7 +28,7 @@ function App() {
 
                 <Route path="/player/:id" element={<PlayerPage />} />
 
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
 
                 <Route path="*" element={<NotFoundPage />} />
 
