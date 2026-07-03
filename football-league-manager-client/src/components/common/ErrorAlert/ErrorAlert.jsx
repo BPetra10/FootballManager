@@ -1,0 +1,23 @@
+import "./ErrorAlert.css";
+
+function ErrorAlert({ message }) {
+
+    if (!message) {
+
+        return null;
+
+    }
+
+    return (
+
+        <div className="error-alert">
+
+            {message}
+
+        </div>
+
+    );
+
+}
+
+export default ErrorAlert;

@@ -39,10 +39,9 @@ function LoginPage() {
                     <form className="auth-form">
 
                         <Input
-                            label="Email"
-                            name="email"
-                            type="email"
-                            placeholder="Enter your email"
+                            label="Username or Email"
+                            name="usernameOrEmail"
+                            placeholder="Enter your username or email"
                             leftIcon={<FaEnvelope />}
                         />
 

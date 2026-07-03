@@ -1,4 +1,5 @@
 ﻿using FootballLeagueManager.API.DTOs;
+using FootballLeagueManager.API.Exceptions;
 using FootballLeagueManager.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,13 +8,13 @@ using System.Security.Claims;
 // Provides authentication related endpoints.
 namespace FootballLeagueManager.API.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
         private readonly JwtService _jwtService;
+
         public AuthController(
             AuthService authService,
             JwtService jwtService)
@@ -33,9 +34,22 @@ namespace FootballLeagueManager.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
         {
-            await _authService.RegisterAsync(request);
+            try
+            {
+                await _authService.RegisterAsync(request);
 
-            return Ok("User created successfully.");
+                return Ok(new
+                {
+                    message = "User created successfully."
+                });
+            }
+            catch (ValidationErrorsException ex)
+            {
+                return BadRequest(new ErrorResponse
+                {
+                    Errors = ex.Errors
+                });
+            }
         }
 
         [HttpPost("login")]
@@ -45,7 +59,10 @@ namespace FootballLeagueManager.API.Controllers
 
             if (user == null)
             {
-                return Unauthorized("Invalid username or password.");
+                return Unauthorized(new
+                {
+                    message = "Invalid username/email or password."
+                });
             }
 
             var token = _jwtService.GenerateToken(user);
@@ -56,7 +73,7 @@ namespace FootballLeagueManager.API.Controllers
             });
         }
 
-        //Returns information about the currently authenticated user.
+        // Returns information about the currently authenticated user.
         [Authorize]
         [HttpGet("me")]
         public IActionResult Me()

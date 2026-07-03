@@ -1,7 +1,9 @@
 // Imports Entity Framework Core and the application's database context.
 using FootballLeagueManager.API.Data;
+using FootballLeagueManager.API.DTOs;
 using FootballLeagueManager.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -18,6 +20,17 @@ namespace FootballLeagueManager.API
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("React", policy =>
+                {
+                    policy
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
             // Registers the application's database context and PostgreSQL connection.
             builder.Services.AddDbContext<FootballLeagueDbContext>(options =>
@@ -98,6 +111,8 @@ namespace FootballLeagueManager.API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("React");
 
             app.UseAuthentication();
 

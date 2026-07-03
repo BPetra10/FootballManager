@@ -1,8 +1,9 @@
 ﻿using FootballLeagueManager.API.Data;
 using FootballLeagueManager.API.DTOs;
+using FootballLeagueManager.API.Exceptions;
 using FootballLeagueManager.API.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 // Handles user registration and authentication logic.
 namespace FootballLeagueManager.API.Services
@@ -22,8 +23,11 @@ namespace FootballLeagueManager.API.Services
             return await _dbContext.Users
                 .AnyAsync(u => u.Role == UserRole.Admin);
         }
+
         public async Task RegisterAsync(RegisterRequest request)
         {
+            var errors = new Dictionary<string, string>();
+
             var normalizedUsername =
                 request.Username.Trim().ToLower();
 
@@ -31,15 +35,20 @@ namespace FootballLeagueManager.API.Services
                 request.Email.Trim().ToLower();
 
             if (await _dbContext.Users.AnyAsync(
-                u => u.Email.ToLower() == normalizedEmail))
+                u => u.Username.ToLower() == normalizedUsername))
             {
-                throw new Exception("Email already exists.");
+                errors["username"] = "This username is already taken.";
             }
 
             if (await _dbContext.Users.AnyAsync(
-                u => u.Username.ToLower() == normalizedUsername))
+                u => u.Email.ToLower() == normalizedEmail))
             {
-                throw new Exception("User already exists.");
+                errors["email"] = "An account with this email already exists.";
+            }
+
+            if (errors.Any())
+            {
+                throw new ValidationErrorsException(errors);
             }
 
             var adminExists = await _dbContext.Users
@@ -67,12 +76,13 @@ namespace FootballLeagueManager.API.Services
 
         public async Task<User?> LoginAsync(LoginRequest request)
         {
-            var normalizedUsername =
-                request.Username.Trim().ToLower();
+            var normalizedLogin =
+                request.UsernameOrEmail.Trim().ToLower();
 
             var user = await _dbContext.Users
-                .FirstOrDefaultAsync(
-                    u => u.Username.ToLower() == normalizedUsername);
+                .FirstOrDefaultAsync(u =>
+                    u.Username.ToLower() == normalizedLogin ||
+                    u.Email.ToLower() == normalizedLogin);
 
             if (user == null)
             {
