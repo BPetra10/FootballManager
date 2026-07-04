@@ -75,15 +75,11 @@ function Input({
 
             </div>
 
-            {error && (
+            <span className="input-error">
 
-                <span className="input-error">
+                {error}
 
-                    {error}
-
-                </span>
-
-            )}
+            </span>
 
         </div>
 

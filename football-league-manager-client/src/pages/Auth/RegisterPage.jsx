@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 import {
     FaUser,
@@ -14,8 +13,7 @@ import Input from "../../components/common/Input/Input";
 import Button from "../../components/common/Button/Button";
 import ErrorAlert from "../../components/common/ErrorAlert/ErrorAlert";
 
-import { register } from "../../services/authService";
-import { validateRegister } from "../../validators/authValidator";
+import { useRegisterForm } from "../../hooks/auth/useRegisterForm";
 
 import football from "../../assets/images/home/football.jpg";
 
@@ -23,103 +21,20 @@ import "./Auth.css";
 
 function RegisterPage() {
 
-    const [showPassword, setShowPassword] = useState(false);
+    const {
+        formData,
+        errors,
+        generalError,
 
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+        showPassword,
+        showConfirmPassword,
 
-    const [formData, setFormData] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
+        setShowPassword,
+        setShowConfirmPassword,
 
-    const [errors, setErrors] = useState({
-        username: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
-
-    const [generalError, setGeneralError] = useState("");
-
-    const handleChange = (e) => {
-
-        const { name, value } = e.target;
-
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-
-        setErrors(prev => ({
-            ...prev,
-            [name]: ""
-        }));
-
-        setGeneralError("");
-
-    };
-
-    const handleSubmit = async (e) => {
-
-        e.preventDefault();
-
-        setGeneralError("");
-
-        const validationErrors =
-            validateRegister(formData);
-
-        if (Object.keys(validationErrors).length > 0) {
-
-            setErrors(validationErrors);
-
-            return;
-
-        }
-
-        try {
-
-            await register(formData);
-
-            alert("Registration successful!");
-
-            setFormData({
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            });
-
-            setErrors({
-                username: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            });
-
-        }
-        catch (error) {
-
-            if (error?.errors) {
-
-                setErrors(prev => ({
-                    ...prev,
-                    ...error.errors
-                }));
-
-                return;
-
-            }
-
-            setGeneralError(
-                error?.message ??
-                "Registration failed."
-            );
-
-        }
-
-    };
+        handleChange,
+        handleSubmit
+    } = useRegisterForm();
 
     return (
 
