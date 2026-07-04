@@ -1,0 +1,18 @@
+.error-alert {
+
+    width: 100%;
+
+    padding: 14px 16px;
+
+    border: 1px solid rgba(239, 68, 68, .4);
+    border-radius: 10px;
+
+    background: rgba(239, 68, 68, .12);
+
+    color: #fecaca;
+
+    font-size: .95rem;
+    font-weight: 500;
+
+    line-height: 1.5;
+}

@@ -1,0 +1,55 @@
+.option {
+
+    flex: 1;
+
+    width: 100%;
+    min-width: 260px;
+    max-width: 340px;
+
+    padding: 24px;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, .06);
+
+    backdrop-filter: blur(6px);
+
+    border: 1px solid rgba(255, 255, 255, .08);
+
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        background .25s ease;
+}
+
+.option:hover {
+
+    transform: translateY(-6px);
+
+    border-color: #22c55e;
+
+    background: rgba(255, 255, 255, .09);
+}
+
+.option h3 {
+    margin: 0 0 14px;
+    color: #22c55e;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.option p {
+
+    margin: 0;
+
+    color: #d1d5db;
+
+    line-height: 1.7;
+}
+
+.option-icon {
+    font-size: 1.6rem;
+}

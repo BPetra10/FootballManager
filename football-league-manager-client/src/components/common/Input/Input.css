@@ -1,0 +1,179 @@
+.input-group{
+
+    display:flex;
+    flex-direction:column;
+
+    gap:6px;
+
+    width:100%;
+}
+
+/* ---------- Label ---------- */
+
+.input-label{
+
+    color:white;
+
+    font-size:.95rem;
+    font-weight:600;
+}
+
+/* ---------- Wrapper ---------- */
+
+.input-wrapper{
+
+    position:relative;
+
+    width:100%;
+}
+
+/* ---------- Input ---------- */
+
+.input-field{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:2px solid rgba(255,255,255,.12);
+    border-radius:10px;
+
+    background:rgba(255,255,255,.05);
+
+    color:white;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:
+        border-color .25s,
+        box-shadow .25s,
+        background .25s;
+}
+
+.input-field::placeholder{
+
+    color:rgba(255,255,255,.45);
+}
+
+/* ---------- Padding ---------- */
+
+.with-left-icon{
+
+    padding-left:48px;
+}
+
+.with-right-icon{
+
+    padding-right:48px;
+}
+
+/* ---------- Icons ---------- */
+
+.input-icon{
+
+    position:absolute;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    width:22px;
+    height:22px;
+
+    color:#bfc5ce;
+}
+
+.input-icon.left{
+
+    left:15px;
+
+    pointer-events:none;
+}
+
+.input-icon.right{
+
+    right:15px;
+
+    border:none;
+    background:none;
+
+    cursor:pointer;
+
+    color:#bfc5ce;
+
+    transition:color .2s;
+}
+
+.input-icon.right:hover{
+
+    color:#22c55e;
+}
+
+/* ---------- Focus ---------- */
+
+.input-field:focus{
+
+    border-color:#22c55e;
+
+    background:rgba(255,255,255,.08);
+
+    box-shadow:
+        0 0 0 4px rgba(34,197,94,.18);
+}
+
+/* ---------- Disabled ---------- */
+
+.input-field:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+}
+
+/* ---------- Error ---------- */
+
+.input-field.error{
+
+    border-color:#ef4444;
+}
+
+.input-field.error:focus{
+
+    border-color:#ef4444;
+
+    box-shadow:
+        0 0 0 4px rgba(239,68,68,.18);
+}
+
+.input-error {
+
+    display: block;
+
+    min-height: 18px;
+
+    margin-bottom: 4px;
+
+    color: #f87171;
+
+    font-size: .85rem;
+}
+
+/* ---------- Autofill ---------- */
+
+.input-field:-webkit-autofill,
+.input-field:-webkit-autofill:hover,
+.input-field:-webkit-autofill:focus{
+
+    -webkit-text-fill-color:white;
+
+    -webkit-box-shadow:
+        0 0 0 1000px rgba(255,255,255,.05) inset;
+
+    transition:background-color 9999s ease-in-out 0s;
+}
