@@ -2,7 +2,9 @@
 
     width: 100%;
 
-    padding: 14px 16px;
+    padding: 14px;
+
+    margin-bottom: 8px;
 
     border: 1px solid rgba(239, 68, 68, .4);
     border-radius: 10px;

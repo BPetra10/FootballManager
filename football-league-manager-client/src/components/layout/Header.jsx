@@ -1,54 +1,109 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 
 import "./Header.css";
 
+import { useAuth } from "../../context/AuthContext";
+
 function Header() {
+    const navigate = useNavigate();
+
+    const {
+        isAuthenticated,
+        user,
+        logout
+    } = useAuth();
+
     const [menuOpen, setMenuOpen] = useState(false);
 
     const headerRef = useRef(null);
 
     useEffect(() => {
+
         function handleClickOutside(event) {
+
             if (
                 headerRef.current &&
                 !headerRef.current.contains(event.target)
             ) {
+
                 setMenuOpen(false);
+
             }
+
         }
 
-        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener(
+            "mousedown",
+            handleClickOutside
+        );
 
         return () => {
+
             document.removeEventListener(
                 "mousedown",
                 handleClickOutside
             );
+
         };
+
     }, []);
 
     useEffect(() => {
+
         function handleResize() {
+
             if (window.innerWidth > 768) {
+
                 setMenuOpen(false);
+
             }
+
         }
 
-        window.addEventListener("resize", handleResize);
+        window.addEventListener(
+            "resize",
+            handleResize
+        );
 
         return () => {
-            window.removeEventListener("resize", handleResize);
+
+            window.removeEventListener(
+                "resize",
+                handleResize
+            );
+
         };
+
     }, []);
 
+    const handleLogout = () => {
+
+        logout();
+
+        navigate("/");
+
+        setMenuOpen(false);
+
+    };
+
     return (
-        <header className="header" ref={headerRef}>
+
+        <header
+            className="header"
+            ref={headerRef}
+        >
+
             <div className="header-top">
+
                 <div className="name">
+
                     <Link to="/">
+
                         <span>Football</span> League Manager
+
                     </Link>
+
                 </div>
 
                 <button
@@ -58,9 +113,17 @@ function Header() {
                 >
                     ☰
                 </button>
+
             </div>
 
-            <nav className={menuOpen ? "nav active" : "nav"}>
+            <nav
+                className={
+                    menuOpen
+                        ? "nav active"
+                        : "nav"
+                }
+            >
+
                 <Link
                     to="/leagues"
                     onClick={() => setMenuOpen(false)}
@@ -68,22 +131,55 @@ function Header() {
                     Leagues
                 </Link>
 
-                <Link
-                    to="/login"
-                    onClick={() => setMenuOpen(false)}
-                >
-                    Login
-                </Link>
+                {!isAuthenticated && (
 
-                <Link
-                    to="/register"
-                    onClick={() => setMenuOpen(false)}
-                >
-                    Register
-                </Link>
+                    <>
+
+                        <Link
+                            to="/login"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Login
+                        </Link>
+
+                        <Link
+                            to="/register"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Register
+                        </Link>
+
+                    </>
+
+                )}
+
+                {isAuthenticated && (
+
+                    <>
+
+                        <span className="header-user">
+
+                            Welcome, {user?.username}
+
+                        </span>
+
+                        <button
+                            className="logout-button"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+
+                    </>
+
+                )}
+
             </nav>
+
         </header>
+
     );
+
 }
 
 export default Header;

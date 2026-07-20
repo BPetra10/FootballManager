@@ -8,32 +8,58 @@ import TeamPage from "./pages/TeamPage";
 import PlayerPage from "./pages/PlayerPage";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import AdminPage from "./pages/Admin/AdminPage";
+import MyTeamPage from "./pages/Manager/MyTeamPage";
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 import Header from "./components/layout/Header";
+
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
     return (
-        <BrowserRouter>
-            <Header />
-            <Routes>
+        <AuthProvider>
+            <BrowserRouter>
+                <Header />
+                <Routes>
 
-                <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<HomePage />} />
 
-                <Route path="/login" element={<LoginPage />} />
+                    <Route path="/login" element={<LoginPage />} />
 
-                <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
 
-                <Route path="/league/:id" element={<LeaguePage />} />
+                    <Route path="/league/:id" element={<LeaguePage />} />
 
-                <Route path="/team/:id" element={<TeamPage />} />
+                    <Route path="/team/:id" element={<TeamPage />} />
 
-                <Route path="/player/:id" element={<PlayerPage />} />
+                    <Route path="/player/:id" element={<PlayerPage />} />
 
-                <Route path="/forgot-password" element={<ForgotPasswordPage />}/>
+                    <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-                <Route path="*" element={<NotFoundPage />} />
+                    <Route
+                        path="/admin"
+                        element={
+                            <ProtectedRoute role="Admin">
+                                <AdminPage />
+                            </ProtectedRoute>
+                        }
+                    />
 
-            </Routes>
-        </BrowserRouter>
+                    <Route
+                        path="/my-team"
+                        element={
+                            <ProtectedRoute role="TeamManager">
+                                <MyTeamPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route path="*" element={<NotFoundPage />} />
+
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
     );
 }
 

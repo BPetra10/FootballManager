@@ -34,6 +34,54 @@ export async function register(data) {
 
 export async function login(data) {
 
+    const response = await fetch(`${API_URL}/login`, {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(data)
+
+    });
+
+    const result = await response.json().catch(() => null);
+
+    if (!response.ok) {
+
+        throw {
+
+            message: result?.message ?? "Login failed."
+
+        };
+
+    }
+
+    return result;
+
+}
+
+export async function getCurrentUser() {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${API_URL}/me`, {
+
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+
+    });
+
+    if (!response.ok) {
+
+        throw new Error("Unauthorized.");
+
+    }
+
+    return await response.json();
+
 }
 
 export async function forgotPassword(data) {

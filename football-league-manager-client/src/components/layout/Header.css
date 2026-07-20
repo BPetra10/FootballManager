@@ -100,6 +100,47 @@
     color: #22c55e;
 }
 
+/* ---------- Logged in user ---------- */
+
+.header-user {
+
+    color: #d1d5db;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+.logout-button {
+
+    padding: 4px 10px;
+
+    border: 2px solid #22c55e;
+    border-radius: 10px;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background .2s,
+        color .2s,
+        border-color .2s;
+}
+
+.logout-button:hover {
+
+    background: #22c55e;
+
+    color: #0f0f0f;
+}
+
 /* ---------- Mobile ---------- */
 
 @media (max-width: 768px) {
@@ -131,7 +172,7 @@
 
         margin-top: 10px;
 
-         gap: 0px;
+        gap: 0px;
     }
 
     .nav.active {
@@ -152,16 +193,60 @@
 
         color: white;
 
-        border-bottom: 1px solid rgba(255,255,255,.08);
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
 
         transition: color .2s;
     }
 
     .nav a:first-child {
-        border-top: 1px solid rgba(255,255,255,.08);
+        border-top: 1px solid rgba(255, 255, 255, .08);
     }
 
     .nav a:hover {
         color: #22c55e;
+    }
+
+    .header-user {
+
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+
+        padding: 16px 8px;
+
+        color: #d1d5db;
+
+        font-size: 1rem;
+
+        border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .logout-button {
+
+        width: 100%;
+
+        margin-top: 12px;
+
+        padding: 14px;
+
+        border: 2px solid #22c55e;
+        border-radius: 10px;
+
+        background: transparent;
+
+        color: white;
+
+        font-size: 1rem;
+        font-weight: 600;
+
+        cursor: pointer;
+    }
+
+    .logout-button:hover {
+
+        background: #22c55e;
+
+        color: #0f0f0f;
     }
 }

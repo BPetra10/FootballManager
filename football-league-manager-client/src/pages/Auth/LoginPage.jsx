@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 import {
     FaEnvelope,
@@ -11,6 +10,9 @@ import {
 import AuthCard from "../../components/auth/AuthCard/AuthCard";
 import Input from "../../components/common/Input/Input";
 import Button from "../../components/common/Button/Button";
+import ErrorAlert from "../../components/common/ErrorAlert/ErrorAlert";
+
+import { useLoginForm } from "../../hooks/auth/useLoginForm";
 
 import football from "../../assets/images/home/football.jpg";
 
@@ -18,7 +20,20 @@ import "./Auth.css";
 
 function LoginPage() {
 
-    const [showPassword, setShowPassword] = useState(false);
+    const {
+
+        formData,
+        errors,
+        generalError,
+
+        showPassword,
+
+        setShowPassword,
+
+        handleChange,
+        handleSubmit
+
+    } = useLoginForm();
 
     return (
 
@@ -36,19 +51,29 @@ function LoginPage() {
                     subtitle="Sign in to continue managing your football club."
                 >
 
-                    <form className="auth-form">
+                    <form
+                        className="auth-form"
+                        onSubmit={handleSubmit}
+                    >
+
+                        <ErrorAlert message={generalError} />
 
                         <Input
                             label="Username or Email"
                             name="usernameOrEmail"
+                            value={formData.usernameOrEmail}
+                            onChange={handleChange}
                             placeholder="Enter your username or email"
                             leftIcon={<FaEnvelope />}
+                            error={errors.usernameOrEmail}
                         />
 
                         <Input
                             label="Password"
                             name="password"
                             type={showPassword ? "text" : "password"}
+                            value={formData.password}
+                            onChange={handleChange}
                             placeholder="Enter your password"
                             leftIcon={<FaLock />}
                             rightIcon={
@@ -59,6 +84,7 @@ function LoginPage() {
                             onRightIconClick={() =>
                                 setShowPassword(!showPassword)
                             }
+                            error={errors.password}
                         />
 
                         <div className="auth-form-options">

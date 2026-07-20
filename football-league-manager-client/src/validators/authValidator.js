@@ -53,3 +53,25 @@ export function validateRegister(formData) {
     return errors;
 
 }
+
+export function validateLogin(formData) {
+
+    const errors = {};
+
+    if (!formData.usernameOrEmail.trim()) {
+
+        errors.usernameOrEmail =
+            "Username or email is required.";
+
+    }
+
+    if (!formData.password) {
+
+        errors.password =
+            "Password is required.";
+
+    }
+
+    return errors;
+
+}
