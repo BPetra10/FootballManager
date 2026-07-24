@@ -163,6 +163,7 @@ namespace FootballLeagueManager.API.Services
             {
                 var row = new LeagueTableRowResponse
                 {
+                    TeamId = team.Id,
                     TeamName = team.Name
                 };
 
@@ -209,11 +210,18 @@ namespace FootballLeagueManager.API.Services
                 table.Add(row);
             }
 
-            return table
+            var orderedTable = table
                 .OrderByDescending(t => t.Points)
                 .ThenByDescending(t => t.GoalDifference)
                 .ThenByDescending(t => t.GoalsFor)
                 .ToList();
+
+            for (int i = 0; i < orderedTable.Count; i++)
+            {
+                orderedTable[i].Position = i + 1;
+            }
+
+            return orderedTable;
         }
     }
 }

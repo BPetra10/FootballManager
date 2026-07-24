@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import LeaguePage from "./pages/LeaguePage";
+import LeagueDetailsPage from "./pages/LeagueDetailsPage/LeagueDetailsPage";
 import TeamPage from "./pages/TeamPage";
 import PlayerPage from "./pages/PlayerPage";
 import ForgotPasswordPage from "./pages/Auth/ForgotPasswordPage";
@@ -30,6 +31,11 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
 
                     <Route path="/leagues" element={<LeaguePage />} />
+
+                    <Route
+                        path="/league/:id"
+                        element={<LeagueDetailsPage />}
+                    />
 
                     <Route path="/team/:id" element={<TeamPage />} />
 

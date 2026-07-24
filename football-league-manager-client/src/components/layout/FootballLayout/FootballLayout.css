@@ -1,4 +1,4 @@
-.league-page {
+.football-layout {
 
     position: relative;
 
@@ -6,7 +6,7 @@
 
     padding: 32px;
 
-    background-image: var(--league-bg);
+    background-image: var(--page-bg);
 
     background-repeat: no-repeat;
 
@@ -20,7 +20,7 @@
 
 }
 
-.league-page::before {
+.football-layout::before {
 
     content: "";
 
@@ -36,7 +36,7 @@
 
 }
 
-.league-page>* {
+.football-layout > * {
 
     position: relative;
 
@@ -44,11 +44,23 @@
 
 }
 
-.league-page h1 {
+.football-layout-content {
 
-    margin: 24px;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+}
+
+.football-layout-header {
 
     text-align: center;
+
+    margin-bottom: 32px;
+
+}
+
+.football-layout-header h1 {
 
     color: #22C55E;
 
@@ -60,23 +72,47 @@
 
 }
 
-.league-error {
+.football-layout-header p {
 
-    color: #ef4444;
+    margin-top: 10px;
+
+    color: #22C55E;
+
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .6);
+
+    font-weight: bolder;
 
     font-size: 1rem;
 
 }
 
+.page-message {
+
+    margin: 24px 0;
+
+    text-align: center;
+
+    color: white;
+
+    font-size: 1rem;
+
+}
+
+.page-message.error {
+
+    color: #ef4444;
+
+}
+
 @media (max-width: 768px) {
 
-    .league-page {
+    .football-layout {
 
         padding: 24px 16px;
 
     }
 
-    .league-page h1 {
+    .football-layout-header h1 {
 
         font-size: 1.7rem;
 

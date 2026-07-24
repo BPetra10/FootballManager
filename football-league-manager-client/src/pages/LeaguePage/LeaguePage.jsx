@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
 import Table from "../../components/common/Table/Table";
+import FootballLayout from "../../components/layout/FootballLayout/FootballLayout";
 
 import { useLeagues } from "../../hooks/league/useLeagues";
 
 import chairs from "../../assets/images/home/chairs.jpg";
-
-import "./LeaguePage.css";
 
 function LeaguePage() {
 
@@ -38,7 +37,7 @@ function LeaguePage() {
             key: "currentTeams",
             header: "Teams",
 
-            render: (row) =>
+            render: row =>
 
                 `${row.currentTeams}/${row.maxTeams}`
 
@@ -48,54 +47,53 @@ function LeaguePage() {
 
     return (
 
-<main
-    className="league-page"
-    style={{
-        "--league-bg": `url(${chairs})`
-    }}
->
+        <FootballLayout
 
-            <div className="league-page-overlay">
+            background={chairs}
 
-                <h1>Leagues</h1>
+            title="Leagues"
 
-                {loading && (
+        >
 
-                    <p>Loading leagues...</p>
+            {loading && (
 
-                )}
+                <p className="page-message">
 
-                {!loading && error && (
+                    Loading leagues...
 
-                    <p className="league-error">
+                </p>
 
-                        {error}
+            )}
 
-                    </p>
+            {!loading && error && (
 
-                )}
+                <p className="page-message error">
 
-                {!loading && !error && (
+                    {error}
 
-                    <Table
+                </p>
 
-                        columns={columns}
+            )}
 
-                        data={leagues}
+            {!loading && !error && (
 
-                        onRowClick={(league) =>
+                <Table
 
-                            navigate(`/league/${league.id}`)
+                    columns={columns}
 
-                        }
+                    data={leagues}
 
-                    />
+                    onRowClick={(league) =>
 
-                )}
+                        navigate(`/league/${league.id}`)
 
-            </div>
+                    }
 
-        </main>
+                />
+
+            )}
+
+        </FootballLayout>
 
     );
 
