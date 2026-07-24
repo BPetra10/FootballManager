@@ -9,10 +9,12 @@ namespace FootballLeagueManager.API.Services
     public class LeagueService
     {
         private readonly FootballLeagueDbContext _dbContext;
+
         public LeagueService(FootballLeagueDbContext dbContext)
         {
             _dbContext = dbContext;
         }
+
         public async Task CreateLeagueAsync(LeagueDto request)
         {
             var normalizedLeagueName =
@@ -31,6 +33,7 @@ namespace FootballLeagueManager.API.Services
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name.Trim(),
+                Country = request.Country.Trim(),
                 MaxTeams = request.MaxTeams
             };
 
@@ -39,21 +42,29 @@ namespace FootballLeagueManager.API.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        // Returns all leagues with their teams.
-        public async Task<List<LeagueDto>> GetAllAsync()
+        // Returns all leagues.
+        public async Task<List<LeagueResponse>> GetAllAsync()
         {
             return await _dbContext.Leagues
-                .Select(l => new LeagueDto
+                .Select(l => new LeagueResponse
                 {
+                    Id = l.Id,
                     Name = l.Name,
+                    Country = l.Country,
+                    CurrentTeams = l.Teams.Count,
                     MaxTeams = l.MaxTeams
                 })
                 .ToListAsync();
         }
 
-        public async Task<LeagueDto> GetByIdAsync(Guid leagueId)
+        public async Task<LeagueResponse> GetByIdAsync(Guid leagueId)
         {
+            // TODO:
+            // This endpoint will be expanded later when the League Details
+            // page is implemented. 
+
             var league = await _dbContext.Leagues
+                .Include(l => l.Teams)
                 .FirstOrDefaultAsync(l => l.Id == leagueId);
 
             if (league == null)
@@ -61,9 +72,12 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("League not found.");
             }
 
-            return new LeagueDto
+            return new LeagueResponse
             {
+                Id = league.Id,
                 Name = league.Name,
+                Country = league.Country,
+                CurrentTeams = league.Teams.Count,
                 MaxTeams = league.MaxTeams
             };
         }
@@ -92,6 +106,7 @@ namespace FootballLeagueManager.API.Services
             }
 
             league.Name = request.Name.Trim();
+            league.Country = request.Country.Trim();
             league.MaxTeams = request.MaxTeams;
 
             await _dbContext.SaveChangesAsync();
@@ -99,24 +114,26 @@ namespace FootballLeagueManager.API.Services
 
         public async Task DeleteLeagueAsync(Guid leagueId)
         {
-            var league = await _dbContext.Leagues.FindAsync(leagueId);
+            var league = await _dbContext.Leagues
+                .FindAsync(leagueId);
 
             if (league == null)
             {
                 return;
             }
 
-            var hasTeams = await _dbContext.Teams.AnyAsync(t => t.LeagueId == leagueId);
+            var hasTeams = await _dbContext.Teams
+                .AnyAsync(t => t.LeagueId == leagueId);
 
             if (hasTeams)
             {
-                throw new Exception("Cannot delete a league that still has teams.");
+                throw new Exception(
+                    "Cannot delete a league that still has teams.");
             }
 
             _dbContext.Leagues.Remove(league);
 
             await _dbContext.SaveChangesAsync();
-
         }
 
         // Calculates the current standings of a league.

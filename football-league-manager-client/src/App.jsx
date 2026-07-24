@@ -29,7 +29,7 @@ function App() {
 
                     <Route path="/register" element={<RegisterPage />} />
 
-                    <Route path="/league/:id" element={<LeaguePage />} />
+                    <Route path="/leagues" element={<LeaguePage />} />
 
                     <Route path="/team/:id" element={<TeamPage />} />
 

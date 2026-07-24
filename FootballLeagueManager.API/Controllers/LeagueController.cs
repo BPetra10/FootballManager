@@ -37,12 +37,16 @@ namespace FootballLeagueManager.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _leagueService.GetByIdAsync(id));
+            var league = await _leagueService.GetByIdAsync(id);
+
+            return Ok(league);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,LeagueDto request)
+        public async Task<IActionResult> Update(
+            Guid id,
+            LeagueDto request)
         {
             await _leagueService.UpdateAsync(id, request);
 
@@ -62,8 +66,10 @@ namespace FootballLeagueManager.API.Controllers
         [HttpGet("{id}/table")]
         public async Task<IActionResult> GetTable(Guid id)
         {
-            return Ok(
-                await _leagueService.GetLeagueTableAsync(id));
+            var table =
+                await _leagueService.GetLeagueTableAsync(id);
+
+            return Ok(table);
         }
     }
 }

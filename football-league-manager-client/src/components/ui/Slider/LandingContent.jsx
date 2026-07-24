@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 import "./LandingContent.css";
+
 import Option from "../../common/Options/Options";
 import Button from "../../common/Button/Button";
 
 function LandingContent() {
+
+    const navigate = useNavigate();
 
     return (
 
@@ -43,11 +48,16 @@ function LandingContent() {
 
             <div className="landing-buttons">
 
-                <Button variant="filled">
+                <Button
+                    variant="filled"
+                    onClick={() => navigate("/leagues")}
+                >
                     Explore Leagues
                 </Button>
 
-                <Button>
+                <Button
+                    onClick={() => navigate("/register")}
+                >
                     Create Account
                 </Button>
 
