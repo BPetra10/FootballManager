@@ -38,6 +38,12 @@ namespace FootballLeagueManager.API.Controllers
             return Ok(await _teamService.GetByIdAsync(id));
         }
 
+        [HttpGet("{id}/players")]
+        public async Task<IActionResult> GetPlayers(Guid id)
+        {
+            return Ok(await _teamService.GetPlayersAsync(id));
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, TeamDto request)

@@ -72,7 +72,13 @@ namespace FootballLeagueManager.API.Services
                 .Select(p => new PlayerListItemDto
                 {
                     Id = p.Id,
+
                     FullName = p.FirstName + " " + p.LastName,
+
+                    Age = p.Age,
+
+                    Position = p.Position.ToString(),
+
                     TeamName = p.Team.Name
                 })
                 .ToListAsync();

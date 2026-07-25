@@ -83,9 +83,12 @@ namespace FootballLeagueManager.API.Services
                 .ToListAsync();
         }
 
-        public async Task<TeamDto> GetByIdAsync(Guid teamId)
+        public async Task<TeamDetailsResponse> GetByIdAsync(Guid teamId)
         {
             var team = await _dbContext.Teams
+                .Include(t => t.League)
+                .Include(t => t.Manager)
+                .Include(t => t.Players)
                 .FirstOrDefaultAsync(t => t.Id == teamId);
 
             if (team == null)
@@ -93,13 +96,27 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("Team not found.");
             }
 
-            return new TeamDto
+            return new TeamDetailsResponse
             {
+                Id = team.Id,
+
                 Name = team.Name,
+
                 City = team.City,
+
                 Country = team.Country,
-                LeagueId = team.LeagueId,
-                ManagerId = team.ManagerId
+
+                LeagueName = team.League.Name,
+
+                ManagerName = team.Manager.Username,
+
+                PlayerCount = team.Players.Count,
+
+                AverageAge = team.Players.Any()
+                    ? Math.Round(
+                        team.Players.Average(p => p.Age),
+                        1)
+                    : 0
             };
         }
         public async Task UpdateAsync(Guid teamId, TeamDto request)
@@ -155,6 +172,35 @@ namespace FootballLeagueManager.API.Services
             team.ManagerId = request.ManagerId;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<PlayerListItemDto>> GetPlayersAsync(Guid teamId)
+        {
+            var teamExists = await _dbContext.Teams
+                .AnyAsync(t => t.Id == teamId);
+
+            if (!teamExists)
+            {
+                throw new Exception("Team not found.");
+            }
+
+            return await _dbContext.Players
+                .Where(p => p.TeamId == teamId)
+                .OrderBy(p => p.LastName)
+                .ThenBy(p => p.FirstName)
+                .Select(p => new PlayerListItemDto
+                {
+                    Id = p.Id,
+
+                    FullName = $"{p.FirstName} {p.LastName}",
+
+                    Age = p.Age,
+
+                    Position = p.Position.ToString(),
+
+                    TeamName = p.Team.Name
+                })
+                .ToListAsync();
         }
         public async Task DeleteAsync(Guid teamId)
         {
