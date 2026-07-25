@@ -1,0 +1,138 @@
+.player-attributes {
+
+    flex: 1;
+
+    min-width: 320px;
+
+    background: rgba(22, 22, 22, .90);
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 18px;
+
+    padding: 28px;
+
+    backdrop-filter: blur(6px);
+
+}
+
+.player-attributes h2 {
+
+    color: #22C55E;
+
+    margin-bottom: 24px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+}
+
+.attribute-row {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+
+}
+
+.attribute-row:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.attribute-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 8px;
+
+}
+
+.attribute-name {
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    letter-spacing: .5px;
+
+}
+
+.attribute-value {
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    transition: color .35s ease;
+
+}
+
+.attributes-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 40px;
+
+}
+
+.attribute-item {
+
+    margin-bottom: 24px;
+
+}
+
+.attribute-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    color: white;
+
+    font-weight: 600;
+
+}
+
+.attribute-bar {
+
+    width: 100%;
+
+    height: 10px;
+
+    background: rgba(255,255,255,.12);
+
+    border-radius: 999px;
+
+    overflow: hidden;
+
+}
+
+.attribute-fill {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    transition: width .3s ease;
+
+}

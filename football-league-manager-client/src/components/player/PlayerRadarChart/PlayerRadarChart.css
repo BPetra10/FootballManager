@@ -1,0 +1,140 @@
+.player-radar {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.radar-svg {
+
+    width: 180px;
+
+    max-width: 100%;
+
+}
+
+.hex {
+
+    stroke: none;
+
+}
+
+.hex-1 {
+
+    fill: #2b7a18;
+
+}
+
+.hex-2 {
+
+    fill: #5f9615;
+
+}
+
+.hex-3 {
+
+    fill: #d4c06c;
+
+}
+
+.hex-4 {
+
+    fill: #d18a8a;
+
+}
+
+.axis {
+
+    stroke: rgba(255,255,255,.35);
+
+    stroke-width: 2;
+
+}
+
+.label {
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    text-anchor: middle;
+
+}
+
+.pace {
+
+    fill: #2ecc71;
+
+}
+
+.shooting {
+
+    fill: #9acd32;
+
+}
+
+.passing {
+
+    fill: #2ecc71;
+
+}
+
+.dribbling {
+
+    fill: #2ecc71;
+
+}
+
+.defending {
+
+    fill: #d32f2f;
+
+}
+
+.physical {
+
+    fill: #fbc02d;
+
+}
+
+.player-polygon {
+
+    fill: rgba(255, 255, 255, 0.45);
+
+    stroke: white;
+
+    stroke-width: 3;
+    
+    stroke-dasharray: 8 5;
+
+    stroke-linejoin: round;
+
+}
+
+.player-point {
+
+    fill: white;
+
+    stroke: white;
+
+    stroke-width: 1.5;
+
+}
+
+.stat-value {
+
+    fill: white;
+
+    stroke: black;
+
+    stroke-width: 0.8px;
+
+    paint-order: stroke fill;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    text-anchor: middle;
+
+}

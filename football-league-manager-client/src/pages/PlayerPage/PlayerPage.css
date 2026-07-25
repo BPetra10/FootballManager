@@ -1,0 +1,15 @@
+.player-details {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: center;
+
+    gap: 60px;
+
+    margin-top: 20px;
+
+    flex-wrap: wrap;
+
+}

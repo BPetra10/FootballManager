@@ -73,7 +73,7 @@ namespace FootballLeagueManager.API.Services
                 {
                     Id = p.Id,
 
-                    FullName = p.FirstName + " " + p.LastName,
+                    FullName = $"{p.FirstName} {p.LastName}",
 
                     Age = p.Age,
 
@@ -84,23 +84,10 @@ namespace FootballLeagueManager.API.Services
                 .ToListAsync();
         }
 
-        public async Task DeleteAsync(Guid playerId)
+        public async Task<PlayerResponse> GetByIdAsync(Guid playerId)
         {
             var player = await _dbContext.Players
-                .FindAsync(playerId);
-
-            if (player == null)
-            {
-                return;
-            }
-
-            _dbContext.Players.Remove(player);
-
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task<PlayerDto> GetByIdAsync(Guid playerId)
-        {
-            var player = await _dbContext.Players
+                .Include(p => p.Team)
                 .FirstOrDefaultAsync(p => p.Id == playerId);
 
             if (player == null)
@@ -108,22 +95,38 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("Player not found.");
             }
 
-            return new PlayerDto
+            return new PlayerResponse
             {
                 FirstName = player.FirstName,
+
                 LastName = player.LastName,
+
                 Age = player.Age,
-                Position = player.Position,
-                PreferredFoot = player.PreferredFoot,
+
+                Position = player.Position.ToString(),
+
+                PreferredFoot = player.PreferredFoot.ToString(),
+
                 Pace = player.Pace,
+
                 Shooting = player.Shooting,
+
                 Passing = player.Passing,
+
                 Dribbling = player.Dribbling,
+
                 Defending = player.Defending,
+
                 Physical = player.Physical,
-                TeamId = player.TeamId
+
+                TeamId = player.TeamId,
+
+                TeamName = player.Team.Name,
+
+                Overall = CalculateOverall(player)
             };
         }
+
         public async Task UpdateAsync(Guid playerId, PlayerDto request)
         {
             var player = await _dbContext.Players
@@ -156,6 +159,63 @@ namespace FootballLeagueManager.API.Services
             player.TeamId = request.TeamId;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Guid playerId)
+        {
+            var player = await _dbContext.Players
+                .FindAsync(playerId);
+
+            if (player == null)
+            {
+                return;
+            }
+
+            _dbContext.Players.Remove(player);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private static int CalculateOverall(Player player)
+        {
+            double overall = player.Position switch
+            {
+                Position.Goalkeeper =>
+                    (player.Pace +
+                     player.Shooting +
+                     player.Passing +
+                     player.Dribbling +
+                     player.Defending +
+                     player.Physical) / 6.0,
+
+                Position.Defender =>
+                    player.Defending * 0.35 +
+                    player.Physical * 0.25 +
+                    player.Pace * 0.15 +
+                    player.Passing * 0.10 +
+                    player.Dribbling * 0.10 +
+                    player.Shooting * 0.05,
+
+                Position.Midfielder =>
+                    player.Passing * 0.35 +
+                    player.Dribbling * 0.25 +
+                    player.Pace * 0.15 +
+                    player.Defending * 0.10 +
+                    player.Physical * 0.05 +
+                    player.Shooting * 0.10,
+
+                Position.Forward =>
+                    player.Shooting * 0.35 +
+                    player.Pace * 0.25 +
+                    player.Dribbling * 0.20 +
+                    player.Passing * 0.10 +
+                    player.Physical * 0.05 +
+                    player.Defending * 0.05,
+
+                _ => 0
+            };
+
+            return (int)Math.Round(overall);
         }
     }
 }

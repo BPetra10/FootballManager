@@ -4,7 +4,7 @@
 
     min-height: calc(100vh - 67px);
 
-    padding: 32px;
+    padding:24px 32px;
 
     background-image: var(--page-bg);
 
