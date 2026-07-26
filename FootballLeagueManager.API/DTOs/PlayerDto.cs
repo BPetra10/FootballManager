@@ -22,23 +22,10 @@ namespace FootballLeagueManager.API.DTOs
 
         public PreferredFoot PreferredFoot { get; set; }
 
-        [Range(0, 100)]
-        public int Pace { get; set; }
-
-        [Range(0, 100)]
-        public int Shooting { get; set; }
-
-        [Range(0, 100)]
-        public int Passing { get; set; }
-
-        [Range(0, 100)]
-        public int Dribbling { get; set; }
-
-        [Range(0, 100)]
-        public int Defending { get; set; }
-
-        [Range(0, 100)]
-        public int Physical { get; set; }
         public Guid TeamId { get; set; }
+
+        public FieldPlayerStatsDto? FieldStats { get; set; }
+
+        public GoalkeeperStatsDto? GoalkeeperStats { get; set; }
     }
 }

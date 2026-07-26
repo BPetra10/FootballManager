@@ -22,6 +22,62 @@ namespace FootballLeagueManager.API.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("FootballLeagueManager.API.Models.FieldPlayerStats", b =>
+                {
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Defending")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Dribbling")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Pace")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Passing")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Physical")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Shooting")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PlayerId");
+
+                    b.ToTable("FieldPlayerStats");
+                });
+
+            modelBuilder.Entity("FootballLeagueManager.API.Models.GoalkeeperStats", b =>
+                {
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Diving")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Handling")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Kicking")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Positioning")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Reflexes")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Speed")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PlayerId");
+
+                    b.ToTable("GoalkeeperStats");
+                });
+
             modelBuilder.Entity("FootballLeagueManager.API.Models.League", b =>
                 {
                     b.Property<Guid>("Id")
@@ -89,12 +145,6 @@ namespace FootballLeagueManager.API.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Defending")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Dribbling")
-                        .HasColumnType("integer");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -103,22 +153,10 @@ namespace FootballLeagueManager.API.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Pace")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Passing")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Physical")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Position")
                         .HasColumnType("integer");
 
                     b.Property<int>("PreferredFoot")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Shooting")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("TeamId")
@@ -200,6 +238,28 @@ namespace FootballLeagueManager.API.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FootballLeagueManager.API.Models.FieldPlayerStats", b =>
+                {
+                    b.HasOne("FootballLeagueManager.API.Models.Player", "Player")
+                        .WithOne("FieldPlayerStats")
+                        .HasForeignKey("FootballLeagueManager.API.Models.FieldPlayerStats", "PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("FootballLeagueManager.API.Models.GoalkeeperStats", b =>
+                {
+                    b.HasOne("FootballLeagueManager.API.Models.Player", "Player")
+                        .WithOne("GoalkeeperStats")
+                        .HasForeignKey("FootballLeagueManager.API.Models.GoalkeeperStats", "PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("FootballLeagueManager.API.Models.Match", b =>
                 {
                     b.HasOne("FootballLeagueManager.API.Models.Team", "AwayTeam")
@@ -252,6 +312,13 @@ namespace FootballLeagueManager.API.Migrations
             modelBuilder.Entity("FootballLeagueManager.API.Models.League", b =>
                 {
                     b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("FootballLeagueManager.API.Models.Player", b =>
+                {
+                    b.Navigation("FieldPlayerStats");
+
+                    b.Navigation("GoalkeeperStats");
                 });
 
             modelBuilder.Entity("FootballLeagueManager.API.Models.Team", b =>

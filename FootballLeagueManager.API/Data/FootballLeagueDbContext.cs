@@ -1,20 +1,24 @@
 ﻿using FootballLeagueManager.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-// Represents the application's database context and managed entities.
 namespace FootballLeagueManager.API.Data
 {
     public class FootballLeagueDbContext(DbContextOptions<FootballLeagueDbContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; }
 
-        // Provides database access to leagues and teams.
         public DbSet<League> Leagues { get; set; }
+
         public DbSet<Team> Teams { get; set; }
+
         public DbSet<Player> Players { get; set; }
+
+        public DbSet<FieldPlayerStats> FieldPlayerStats { get; set; }
+
+        public DbSet<GoalkeeperStats> GoalkeeperStats { get; set; }
+
         public DbSet<Match> Matches { get; set; }
 
-        // Configures relationships between entities. 1:1 relationship between team and manager.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -43,6 +47,24 @@ namespace FootballLeagueManager.API.Data
             modelBuilder.Entity<Team>()
                 .HasIndex(t => t.ManagerId)
                 .IsUnique();
+
+            modelBuilder.Entity<FieldPlayerStats>()
+                .HasKey(s => s.PlayerId);
+
+            modelBuilder.Entity<GoalkeeperStats>()
+                .HasKey(s => s.PlayerId);
+
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.FieldPlayerStats)
+                .WithOne(s => s.Player)
+                .HasForeignKey<FieldPlayerStats>(s => s.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.GoalkeeperStats)
+                .WithOne(s => s.Player)
+                .HasForeignKey<GoalkeeperStats>(s => s.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

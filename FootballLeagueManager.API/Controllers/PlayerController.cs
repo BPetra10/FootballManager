@@ -18,8 +18,7 @@ namespace FootballLeagueManager.API.Controllers
 
         [Authorize(Roles = "Admin,TeamManager")]
         [HttpPost]
-        public async Task<IActionResult> Create(
-            PlayerDto request)
+        public async Task<IActionResult> Create([FromBody] PlayerDto request)
         {
             await _playerService.CreatePlayerAsync(request);
 
@@ -32,15 +31,6 @@ namespace FootballLeagueManager.API.Controllers
             return Ok(await _playerService.GetAllAsync());
         }
 
-        [Authorize(Roles = "Admin,TeamManager")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            await _playerService.DeleteAsync(id);
-
-            return Ok("Player deleted successfully.");
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -49,11 +39,20 @@ namespace FootballLeagueManager.API.Controllers
 
         [Authorize(Roles = "Admin,TeamManager")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id,PlayerDto request)
+        public async Task<IActionResult> Update(Guid id, [FromBody] PlayerDto request)
         {
             await _playerService.UpdateAsync(id, request);
 
             return Ok("Player updated successfully.");
+        }
+
+        [Authorize(Roles = "Admin,TeamManager")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _playerService.DeleteAsync(id);
+
+            return Ok("Player deleted successfully.");
         }
     }
 }
