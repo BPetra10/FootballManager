@@ -131,25 +131,25 @@ function Header() {
                     Leagues
                 </Link>
 
-                {!isAuthenticated && (
+                {isAuthenticated && user?.role === "Admin" && (
 
-                    <>
+                    <Link
+                        to="/admin"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        Admin Panel
+                    </Link>
 
-                        <Link
-                            to="/login"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Login
-                        </Link>
+                )}
 
-                        <Link
-                            to="/register"
-                            onClick={() => setMenuOpen(false)}
-                        >
-                            Register
-                        </Link>
+                {isAuthenticated && user?.role === "TeamManager" && (
 
-                    </>
+                    <Link
+                        to="/my-team"
+                        onClick={() => setMenuOpen(false)}
+                    >
+                        My Team
+                    </Link>
 
                 )}
 
@@ -169,6 +169,28 @@ function Header() {
                         >
                             Logout
                         </button>
+
+                    </>
+
+                )}
+
+                {!isAuthenticated && (
+
+                    <>
+
+                        <Link
+                            to="/login"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Login
+                        </Link>
+
+                        <Link
+                            to="/register"
+                            onClick={() => setMenuOpen(false)}
+                        >
+                            Register
+                        </Link>
 
                     </>
 
