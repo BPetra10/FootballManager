@@ -3,30 +3,98 @@ import InfoCards from "../../common/InfoCards/InfoCards";
 
 function PlayerRadarChart({ player }) {
 
+    if (!player) return null;
+
     const centerX = 150;
     const centerY = 125;
     const maxRadius = 95;
 
-    const stats = [
+    const isGoalkeeper = player.position === "Goalkeeper";
 
-        player.pace,
-        player.shooting,
-        player.passing,
-        player.dribbling,
-        player.defending,
-        player.physical
+    const radarStats = isGoalkeeper
+        ? [
+            {
+                short: "DIV",
+                value: player.goalkeeperStats.diving,
+                css: "pace"
+            },
+            {
+                short: "HAN",
+                value: player.goalkeeperStats.handling,
+                css: "shooting"
+            },
+            {
+                short: "KIC",
+                value: player.goalkeeperStats.kicking,
+                css: "passing"
+            },
+            {
+                short: "REF",
+                value: player.goalkeeperStats.reflexes,
+                css: "dribbling"
+            },
+            {
+                short: "SPD",
+                value: player.goalkeeperStats.speed,
+                css: "defending"
+            },
+            {
+                short: "POS",
+                value: player.goalkeeperStats.positioning,
+                css: "physical"
+            }
+        ]
+        : [
+            {
+                short: "PAC",
+                value: player.fieldStats.pace,
+                css: "pace"
+            },
+            {
+                short: "SHO",
+                value: player.fieldStats.shooting,
+                css: "shooting"
+            },
+            {
+                short: "PAS",
+                value: player.fieldStats.passing,
+                css: "passing"
+            },
+            {
+                short: "DRI",
+                value: player.fieldStats.dribbling,
+                css: "dribbling"
+            },
+            {
+                short: "DEF",
+                value: player.fieldStats.defending,
+                css: "defending"
+            },
+            {
+                short: "PHY",
+                value: player.fieldStats.physical,
+                css: "physical"
+            }
+        ];
 
-    ];
+    const stats = radarStats.map(stat => stat.value);
 
     const angles = [
-
         -90,
         -30,
         30,
         90,
         150,
         210
+    ];
 
+    const labelPositions = [
+        { x: 150, y: 5, valueY: 22 },
+        { x: 275, y: 72, valueY: 90 },
+        { x: 275, y: 182, valueY: 200 },
+        { x: 150, y: 245, valueY: 263 },
+        { x: 18, y: 182, valueY: 200 },
+        { x: 18, y: 72, valueY: 90 }
     ];
 
     const points = stats.map((value, index) => {
@@ -52,8 +120,9 @@ function PlayerRadarChart({ player }) {
     return (
 
         <div className="player-radar">
+
             <svg
-                viewBox="0 -15 300 315"
+                viewBox="-15 -15 330 315"
                 className="radar-svg"
             >
 
@@ -85,82 +154,53 @@ function PlayerRadarChart({ player }) {
                 <line x1="150" y1="125" x2="65" y2="75" className="axis" />
 
                 <polygon
-
                     points={polygonPoints}
-
                     className="player-polygon"
-
                 />
 
-                {points.map((point, index) => (
+                {
 
-                    <circle
+                    points.map((point, index) => (
 
-                        key={index}
+                        <circle
+                            key={index}
+                            cx={point.x}
+                            cy={point.y}
+                            r="4"
+                            className="player-point"
+                        />
 
-                        cx={point.x}
+                    ))
 
-                        cy={point.y}
+                }
 
-                        r="4"
+                {
 
-                        className="player-point"
+                    radarStats.map((stat, index) => (
 
-                    />
+                        <g key={stat.short}>
 
-                ))}
+                            <text
+                                x={labelPositions[index].x}
+                                y={labelPositions[index].y}
+                                className={`label ${stat.css}`}
+                            >
+                                {stat.short}
+                            </text>
 
-                <text x="150" y="5" className="label pace">
-                    PAC
-                </text>
+                            <text
+                                x={labelPositions[index].x}
+                                y={labelPositions[index].valueY}
+                                className="stat-value"
+                            >
+                                {stat.value}
+                            </text>
 
-                <text x="150" y="22" className="stat-value">
-                    {player.pace}
-                </text>
+                        </g>
 
-                <text x="275" y="72" className="label shooting">
-                    SHO
-                </text>
+                    ))
 
-                <text x="275" y="90" className="stat-value">
-                    {player.shooting}
-                </text>
-
-
-                <text x="275" y="182" className="label passing">
-                    PAS
-                </text>
-
-                <text x="275" y="200" className="stat-value">
-                    {player.passing}
-                </text>
-
-
-                <text x="150" y="245" className="label dribbling">
-                    DRI
-                </text>
-
-                <text x="150" y="263" className="stat-value">
-                    {player.dribbling}
-                </text>
-
-
-                <text x="18" y="182" className="label defending">
-                    DEF
-                </text>
-
-                <text x="18" y="200" className="stat-value">
-                    {player.defending}
-                </text>
-
-
-                <text x="18" y="72" className="label physical">
-                    PHY
-                </text>
-
-                <text x="18" y="90" className="stat-value">
-                    {player.physical}
-                </text>
+                }
 
             </svg>
 

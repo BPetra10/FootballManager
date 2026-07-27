@@ -4,6 +4,8 @@ function PlayerAttributes({ player }) {
 
     if (!player) return null;
 
+    const isGoalkeeper = player.position === "Goalkeeper";
+
     const getBarColor = (value) => {
 
         if (value >= 90) {
@@ -34,43 +36,65 @@ function PlayerAttributes({ player }) {
 
     };
 
-    const leftAttributes = [
+    const leftAttributes = isGoalkeeper
+        ? [
+            {
+                label: "DIVING",
+                value: player.goalkeeperStats.diving
+            },
+            {
+                label: "HANDLING",
+                value: player.goalkeeperStats.handling
+            },
+            {
+                label: "KICKING",
+                value: player.goalkeeperStats.kicking
+            }
+        ]
+        : [
+            {
+                label: "PACE",
+                value: player.fieldStats.pace
+            },
+            {
+                label: "SHOOTING",
+                value: player.fieldStats.shooting
+            },
+            {
+                label: "PASSING",
+                value: player.fieldStats.passing
+            }
+        ];
 
-        {
-            label: "PACE",
-            value: player.pace
-        },
-
-        {
-            label: "SHOOTING",
-            value: player.shooting
-        },
-
-        {
-            label: "PASSING",
-            value: player.passing
-        }
-
-    ];
-
-    const rightAttributes = [
-
-        {
-            label: "DRIBBLING",
-            value: player.dribbling
-        },
-
-        {
-            label: "DEFENDING",
-            value: player.defending
-        },
-
-        {
-            label: "PHYSICAL",
-            value: player.physical
-        }
-
-    ];
+    const rightAttributes = isGoalkeeper
+        ? [
+            {
+                label: "REFLEXES",
+                value: player.goalkeeperStats.reflexes
+            },
+            {
+                label: "SPEED",
+                value: player.goalkeeperStats.speed
+            },
+            {
+                label: "POSITIONING",
+                value: player.goalkeeperStats.positioning
+            }
+        ]
+        : [
+            {
+                label: "DRIBBLING",
+                value: player.fieldStats.dribbling
+            },
+            {
+                label: "DEFENDING",
+                value: player.fieldStats.defending
+            },
+            {
+                label: "PHYSICAL",
+                value: player.fieldStats.physical
+            }
+        ];
 
     const renderColumn = (attributes) => (
 
