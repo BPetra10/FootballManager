@@ -1,10 +1,10 @@
 import "./InfoCards.css";
 
-function InfoCards({ items }) {
+function InfoCards({ items, className = "" }) {
 
     return (
 
-        <section className="info-cards">
+        <section className={`info-cards ${className}`}>
 
             {items.map((item) => (
 
