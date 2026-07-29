@@ -1,14 +1,12 @@
+import { apiFetch } from "../api/apiClient";
+
 const API_URL = import.meta.env.VITE_API_URL + "/auth";
 
 export async function register(data) {
 
-    const response = await fetch(`${API_URL}/register`, {
+    const response = await apiFetch(`${API_URL}/register`, {
 
         method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
 
         body: JSON.stringify(data)
 
@@ -34,13 +32,9 @@ export async function register(data) {
 
 export async function login(data) {
 
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await apiFetch(`${API_URL}/login`, {
 
         method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
 
         body: JSON.stringify(data)
 
@@ -64,15 +58,7 @@ export async function login(data) {
 
 export async function getCurrentUser() {
 
-    const token = localStorage.getItem("token");
-
-    const response = await fetch(`${API_URL}/me`, {
-
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-
-    });
+    const response = await apiFetch(`${API_URL}/me`);
 
     if (!response.ok) {
 

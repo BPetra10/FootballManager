@@ -1,8 +1,10 @@
+import { apiFetch } from "../api/apiClient";
+
 const API_URL = import.meta.env.VITE_API_URL + "/league";
 
 export async function getAllLeagues() {
 
-    const response = await fetch(API_URL);
+    const response = await apiFetch(API_URL);
 
     const result = await response.json().catch(() => null);
 
@@ -24,7 +26,7 @@ export async function getAllLeagues() {
 
 export async function getLeagueById(id) {
 
-    const response = await fetch(
+    const response = await apiFetch(
         `${API_URL}/${id}`
     );
 
@@ -48,7 +50,7 @@ export async function getLeagueById(id) {
 
 export async function getLeagueTable(id) {
 
-    const response = await fetch(
+    const response = await apiFetch(
         `${API_URL}/${id}/table`
     );
 

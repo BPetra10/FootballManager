@@ -1,4 +1,4 @@
-﻿using FootballLeagueManager.API.DTOs;
+﻿using FootballLeagueManager.API.DTOs.League;
 using FootballLeagueManager.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +21,16 @@ namespace FootballLeagueManager.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(LeagueDto request)
         {
-            await _leagueService.CreateLeagueAsync(request);
+            try
+            {
+                await _leagueService.CreateLeagueAsync(request);
 
-            return Ok("League created successfully.");
+                return Ok("League created successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]

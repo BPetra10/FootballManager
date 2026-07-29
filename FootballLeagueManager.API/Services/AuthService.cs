@@ -1,5 +1,5 @@
 ﻿using FootballLeagueManager.API.Data;
-using FootballLeagueManager.API.DTOs;
+using FootballLeagueManager.API.DTOs.Auth;
 using FootballLeagueManager.API.Exceptions;
 using FootballLeagueManager.API.Models;
 using Microsoft.AspNetCore.Identity;

@@ -4,7 +4,6 @@ function FootballLayout({
     background,
     title,
     subtitle,
-    titleStyle,
     children
 }) {
 
@@ -21,7 +20,7 @@ function FootballLayout({
 
                 <header className="football-layout-header">
 
-                    <h1 style={titleStyle}>{title}</h1>
+                    <h1>{title}</h1>
 
                     {subtitle && (
 

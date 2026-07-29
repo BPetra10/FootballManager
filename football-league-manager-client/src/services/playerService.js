@@ -1,8 +1,10 @@
+import { apiFetch } from "../api/apiClient";
+
 const API_URL = import.meta.env.VITE_API_URL + "/player";
 
 export async function getPlayerById(id) {
 
-    const response = await fetch(
+    const response = await apiFetch(
         `${API_URL}/${id}`
     );
 

@@ -1,5 +1,5 @@
 ﻿using FootballLeagueManager.API.Data;
-using FootballLeagueManager.API.DTOs;
+using FootballLeagueManager.API.DTOs.League;
 using FootballLeagueManager.API.Models;
 using Microsoft.EntityFrameworkCore;
 

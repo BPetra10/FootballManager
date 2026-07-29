@@ -1,4 +1,4 @@
-import AuthCard from "../../components/auth/AuthCard/AuthCard";
+import FormCard from "../../components/common/Form/FormCard";
 import Input from "../../components/common/Input/Input";
 import Button from "../../components/common/Button/Button";
 
@@ -23,12 +23,12 @@ function ForgotPasswordPage() {
 
             <div className="auth-overlay">
 
-                <AuthCard
+                <FormCard
                     title="Forgot Password?"
                     subtitle="Enter your email address and we'll send you a password reset link."
                 >
 
-                    <form className="auth-form">
+                    <form className="form">
 
                         <Input
                             label="Email"
@@ -47,7 +47,7 @@ function ForgotPasswordPage() {
 
                     </form>
 
-                </AuthCard>
+                </FormCard>
 
             </div>
 

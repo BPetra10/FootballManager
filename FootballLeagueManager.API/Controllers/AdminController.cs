@@ -19,4 +19,14 @@ public class AdminController : ControllerBase
     {
         return Ok(await _adminService.GetDashboardAsync());
     }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("available-managers")]
+    public async Task<IActionResult> GetAvailableManagers()
+    {
+        var managers =
+            await _adminService.GetAvailableManagersAsync();
+
+        return Ok(managers);
+    }
 }

@@ -8,7 +8,7 @@ import {
     FaEyeSlash
 } from "react-icons/fa6";
 
-import AuthCard from "../../components/auth/AuthCard/AuthCard";
+import FormCard from "../../components/common/Form/FormCard";
 import Input from "../../components/common/Input/Input";
 import Button from "../../components/common/Button/Button";
 import ErrorAlert from "../../components/common/ErrorAlert/ErrorAlert";
@@ -22,6 +22,7 @@ import "./Auth.css";
 function RegisterPage() {
 
     const {
+
         formData,
         errors,
         generalError,
@@ -34,6 +35,7 @@ function RegisterPage() {
 
         handleChange,
         handleSubmit
+
     } = useRegisterForm();
 
     return (
@@ -47,13 +49,13 @@ function RegisterPage() {
 
             <div className="auth-overlay">
 
-                <AuthCard
+                <FormCard
                     title="Create Account"
                     subtitle="Start building your legacy."
                 >
 
                     <form
-                        className="auth-form"
+                        className="form"
                         onSubmit={handleSubmit}
                     >
 
@@ -125,7 +127,7 @@ function RegisterPage() {
                             Create Account
                         </Button>
 
-                        <p className="auth-footer">
+                        <p className="form-footer">
 
                             Already have an account?
 
@@ -137,7 +139,7 @@ function RegisterPage() {
 
                     </form>
 
-                </AuthCard>
+                </FormCard>
 
             </div>
 

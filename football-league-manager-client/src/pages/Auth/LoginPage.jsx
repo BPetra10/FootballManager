@@ -7,7 +7,7 @@ import {
     FaEyeSlash
 } from "react-icons/fa6";
 
-import AuthCard from "../../components/auth/AuthCard/AuthCard";
+import FormCard from "../../components/common/Form/FormCard";
 import Input from "../../components/common/Input/Input";
 import Button from "../../components/common/Button/Button";
 import ErrorAlert from "../../components/common/ErrorAlert/ErrorAlert";
@@ -46,13 +46,13 @@ function LoginPage() {
 
             <div className="auth-overlay">
 
-                <AuthCard
+                <FormCard
                     title="Welcome Back!"
                     subtitle="Sign in to continue managing your football club."
                 >
 
                     <form
-                        className="auth-form"
+                        className="form"
                         onSubmit={handleSubmit}
                     >
 
@@ -87,11 +87,11 @@ function LoginPage() {
                             error={errors.password}
                         />
 
-                        <div className="auth-form-options">
+                        <div className="form-options">
 
                             <Link
                                 to="/forgot-password"
-                                className="auth-link"
+                                className="form-link"
                             >
                                 Forgot password?
                             </Link>
@@ -105,7 +105,7 @@ function LoginPage() {
                             Sign In
                         </Button>
 
-                        <p className="auth-footer">
+                        <p className="form-footer">
 
                             Don't have an account?
 
@@ -117,7 +117,7 @@ function LoginPage() {
 
                     </form>
 
-                </AuthCard>
+                </FormCard>
 
             </div>
 

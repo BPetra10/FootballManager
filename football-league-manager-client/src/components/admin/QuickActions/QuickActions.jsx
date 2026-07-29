@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import {
     FaPlus,
     FaUserTie,
@@ -8,28 +6,26 @@ import {
 
 import "./QuickActions.css";
 
-function QuickActions() {
-
-    const navigate = useNavigate();
+function QuickActions({ onOpenModal }) {
 
     const actions = [
 
         {
             title: "Create League",
             icon: <FaPlus />,
-            onClick: () => navigate("/admin/leagues/create")
+            modal: "league"
         },
 
         {
             title: "Create Team",
             icon: <FaPlus />,
-            onClick: () => navigate("/admin/teams/create")
+            modal: "team"
         },
 
         {
             title: "Assign Manager",
             icon: <FaUserTie />,
-            onClick: () => navigate("/admin/managers")
+            modal: "assignManager"
         }
 
     ];
@@ -38,11 +34,7 @@ function QuickActions() {
 
         <section className="quick-actions">
 
-            <h2>
-
-                Quick Actions
-
-            </h2>
+            <h2>Quick Actions</h2>
 
             <div className="quick-actions-grid">
 
@@ -53,7 +45,7 @@ function QuickActions() {
                         <button
                             key={action.title}
                             className="quick-action-card"
-                            onClick={action.onClick}
+                            onClick={() => onOpenModal(action.modal)}
                         >
 
                             <div className="quick-action-left">

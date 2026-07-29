@@ -1,4 +1,4 @@
-﻿using FootballLeagueManager.API.DTOs;
+﻿using FootballLeagueManager.API.DTOs.Player;
 using FootballLeagueManager.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,10 @@
+import { apiFetch } from "../api/apiClient";
+
 const API_URL = import.meta.env.VITE_API_URL + "/team";
 
 export async function getTeamById(id) {
 
-    const response = await fetch(
+    const response = await apiFetch(
         `${API_URL}/${id}`
     );
 
@@ -26,7 +28,7 @@ export async function getTeamById(id) {
 
 export async function getTeamPlayers(id) {
 
-    const response = await fetch(
+    const response = await apiFetch(
         `${API_URL}/${id}/players`
     );
 

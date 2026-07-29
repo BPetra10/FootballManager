@@ -186,7 +186,7 @@ namespace FootballLeagueManager.API.Migrations
                     b.Property<Guid>("LeagueId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ManagerId")
+                    b.Property<Guid?>("ManagerId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
@@ -300,9 +300,7 @@ namespace FootballLeagueManager.API.Migrations
 
                     b.HasOne("FootballLeagueManager.API.Models.User", "Manager")
                         .WithOne("Team")
-                        .HasForeignKey("FootballLeagueManager.API.Models.Team", "ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FootballLeagueManager.API.Models.Team", "ManagerId");
 
                     b.Navigation("League");
 

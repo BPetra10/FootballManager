@@ -1,5 +1,5 @@
 ﻿using FootballLeagueManager.API.Data;
-using FootballLeagueManager.API.DTOs;
+using FootballLeagueManager.API.DTOs.Team;
 using FootballLeagueManager.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +9,7 @@ namespace FootballLeagueManager.API.Services
     public class TeamService
     {
         private readonly FootballLeagueDbContext _dbContext;
+
         public TeamService(FootballLeagueDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -25,12 +26,23 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("League not found.");
             }
 
-            var manager = await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.Id == request.ManagerId);
-
-            if (manager == null)
+            if (request.ManagerId.HasValue)
             {
-                throw new Exception("Manager not found.");
+                var manager = await _dbContext.Users
+                    .FirstOrDefaultAsync(u => u.Id == request.ManagerId);
+
+                if (manager == null)
+                {
+                    throw new Exception("Manager not found.");
+                }
+
+                var managerAlreadyAssigned = await _dbContext.Teams
+                    .AnyAsync(t => t.ManagerId == request.ManagerId);
+
+                if (managerAlreadyAssigned)
+                {
+                    throw new Exception("Manager already has a team.");
+                }
             }
 
             var teamNameExists = await _dbContext.Teams
@@ -39,14 +51,6 @@ namespace FootballLeagueManager.API.Services
             if (teamNameExists)
             {
                 throw new Exception("Team already exists.");
-            }
-
-            var managerAlreadyAssigned = await _dbContext.Teams
-                .AnyAsync(t => t.ManagerId == request.ManagerId);
-
-            if (managerAlreadyAssigned)
-            {
-                throw new Exception("Manager already has a team.");
             }
 
             if (league.Teams.Count >= league.MaxTeams)
@@ -99,26 +103,23 @@ namespace FootballLeagueManager.API.Services
             return new TeamDetailsResponse
             {
                 Id = team.Id,
-
                 Name = team.Name,
-
                 City = team.City,
-
                 Country = team.Country,
-
                 LeagueName = team.League.Name,
 
-                ManagerName = team.Manager.Username,
+                ManagerName = team.Manager != null
+                    ? team.Manager.Username
+                    : "No manager",
 
                 PlayerCount = team.Players.Count,
 
                 AverageAge = team.Players.Any()
-                    ? Math.Round(
-                        team.Players.Average(p => p.Age),
-                        1)
+                    ? Math.Round(team.Players.Average(p => p.Age), 1)
                     : 0
             };
         }
+
         public async Task UpdateAsync(Guid teamId, TeamDto request)
         {
             var team = await _dbContext.Teams
@@ -147,22 +148,25 @@ namespace FootballLeagueManager.API.Services
                 throw new Exception("League not found.");
             }
 
-            var managerExists = await _dbContext.Users
-                .AnyAsync(u => u.Id == request.ManagerId);
-
-            if (!managerExists)
+            if (request.ManagerId != Guid.Empty)
             {
-                throw new Exception("Manager not found.");
-            }
+                var managerExists = await _dbContext.Users
+                    .AnyAsync(u => u.Id == request.ManagerId);
 
-            var managerAlreadyAssigned = await _dbContext.Teams
-                .AnyAsync(t =>
-                    t.ManagerId == request.ManagerId &&
-                    t.Id != teamId);
+                if (!managerExists)
+                {
+                    throw new Exception("Manager not found.");
+                }
 
-            if (managerAlreadyAssigned)
-            {
-                throw new Exception("Manager already has a team.");
+                var managerAlreadyAssigned = await _dbContext.Teams
+                    .AnyAsync(t =>
+                        t.ManagerId == request.ManagerId &&
+                        t.Id != teamId);
+
+                if (managerAlreadyAssigned)
+                {
+                    throw new Exception("Manager already has a team.");
+                }
             }
 
             team.Name = request.Name;
@@ -191,17 +195,14 @@ namespace FootballLeagueManager.API.Services
                 .Select(p => new PlayerListItemDto
                 {
                     Id = p.Id,
-
                     FullName = $"{p.FirstName} {p.LastName}",
-
                     Age = p.Age,
-
                     Position = p.Position.ToString(),
-
                     TeamName = p.Team.Name
                 })
                 .ToListAsync();
         }
+
         public async Task DeleteAsync(Guid teamId)
         {
             var team = await _dbContext.Teams.FindAsync(teamId);
