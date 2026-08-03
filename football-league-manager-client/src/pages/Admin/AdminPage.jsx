@@ -17,9 +17,11 @@ import ErrorAlert from "../../components/common/ErrorAlert/ErrorAlert";
 import { useAdminData } from "../../hooks/admin/useAdminData";
 import { useLeagueForm } from "../../hooks/admin/useLeagueForm";
 import { useTeamForm } from "../../hooks/admin/useTeamForm";
+import { useAssignManagerForm } from "../../hooks/admin/useAssignManagerForm";
 
 import LeagueForm from "../../components/admin/forms/LeagueForm";
 import TeamForm from "../../components/admin/forms/TeamForm";
+import AssignManagerForm from "../../components/admin/forms/AssignManagerForm";
 
 import stadium from "../../assets/images/home/stadium.jpg";
 
@@ -40,6 +42,14 @@ function AdminPage() {
         await adminData.refresh();
 
         setActiveModal(null);
+    });
+
+    const assignManagerForm = useAssignManagerForm(async () => {
+
+        await adminData.refresh();
+
+        setActiveModal(null);
+
     });
 
     const adminData = useAdminData();
@@ -87,15 +97,15 @@ function AdminPage() {
 
                 {activeModal === "assignManager" && (
 
-                    <FormCard
-                        title="Assign Manager"
-                        subtitle="Assign a manager to a team."
-                    >
+                    <AssignManagerForm
 
-                        {/* TODO */}
+                        form={assignManagerForm}
 
-                    </FormCard>
+                        managers={adminData.availableManagers}
 
+                        teams={adminData.teamsWithoutManager}
+
+                    />
                 )}
 
             </Modal>

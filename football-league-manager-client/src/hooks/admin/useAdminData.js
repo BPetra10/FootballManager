@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 
 import { getDashboard } from "../../services/admin/adminService";
 import { getLeagues } from "../../services/admin/adminLeagueService";
-import { getTeams } from "../../services/admin/adminTeamService";
-import { getAvailableManagers } from "../../services/admin/adminManagerService";
+import {
+    getAvailableManagers,
+    getTeamsWithoutManager
+} from "../../services/admin/adminManagerService";
 
 export function useAdminData() {
 
@@ -11,19 +13,11 @@ export function useAdminData() {
 
     const [leagues, setLeagues] = useState([]);
 
-    const [teams, setTeams] = useState([]);
-
     const [availableManagers, setAvailableManagers] = useState([]);
 
-    const [loading, setLoading] = useState(true);
-
-    const [error, setError] = useState("");
+    const [teamsWithoutManager, setTeamsWithoutManager] = useState([]);
 
     const refresh = useCallback(async () => {
-
-        setLoading(true);
-
-        setError("");
 
         try {
 
@@ -31,15 +25,15 @@ export function useAdminData() {
 
                 dashboardData,
                 leagueData,
-                teamData,
-                managerData
+                managerData,
+                teamData
 
             ] = await Promise.all([
 
                 getDashboard(),
                 getLeagues(),
-                getTeams(),
-                getAvailableManagers()
+                getAvailableManagers(),
+                getTeamsWithoutManager()
 
             ]);
 
@@ -47,26 +41,15 @@ export function useAdminData() {
 
             setLeagues(leagueData);
 
-            setTeams(teamData);
-
             setAvailableManagers(managerData);
+
+            setTeamsWithoutManager(teamData);
 
         }
 
         catch (error) {
 
-            setError(
-
-                error?.message ??
-                "Failed to load admin data."
-
-            );
-
-        }
-
-        finally {
-
-            setLoading(false);
+            console.error(error);
 
         }
 
@@ -84,13 +67,9 @@ export function useAdminData() {
 
         leagues,
 
-        teams,
-
         availableManagers,
 
-        loading,
-
-        error,
+        teamsWithoutManager,
 
         refresh
 

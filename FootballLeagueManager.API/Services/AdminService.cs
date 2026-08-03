@@ -44,8 +44,50 @@ namespace FootballLeagueManager.API.Services
                     Id = user.Id,
                     Username = user.Username
                 })
+                
+                .ToListAsync();
+        }
+
+        public async Task<List<TeamWithoutManagerDto>> GetTeamsWithoutManagerAsync()
+        {
+            return await _dbContext.Teams
+
+                .Where(team => team.ManagerId == null)
+
+                .OrderBy(team => team.Name)
+
+                .Select(team => new TeamWithoutManagerDto
+                {
+                    Id = team.Id,
+                    Name = team.Name
+                })
 
                 .ToListAsync();
+        }
+
+        public async Task AssignManagerAsync(AssignManagerDto request)
+        {
+            var team = await _dbContext.Teams
+                .FirstOrDefaultAsync(team => team.Id == request.TeamId);
+
+            if (team == null)
+            {
+                throw new Exception("Team not found.");
+            }
+
+            var manager = await _dbContext.Users
+                .FirstOrDefaultAsync(user =>
+                    user.Id == request.ManagerId &&
+                    user.Role == UserRole.TeamManager);
+
+            if (manager == null)
+            {
+                throw new Exception("Manager not found.");
+            }
+
+            team.ManagerId = request.ManagerId;
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

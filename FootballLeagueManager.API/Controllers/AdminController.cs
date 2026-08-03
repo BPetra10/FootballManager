@@ -1,4 +1,5 @@
-﻿using FootballLeagueManager.API.Services;
+﻿using FootballLeagueManager.API.DTOs.Admin;
+using FootballLeagueManager.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,6 @@ public class AdminController : ControllerBase
         return Ok(await _adminService.GetDashboardAsync());
     }
 
-    [Authorize(Roles = "Admin")]
     [HttpGet("available-managers")]
     public async Task<IActionResult> GetAvailableManagers()
     {
@@ -28,5 +28,23 @@ public class AdminController : ControllerBase
             await _adminService.GetAvailableManagersAsync();
 
         return Ok(managers);
+    }
+
+    [HttpGet("teams-without-manager")]
+    public async Task<IActionResult> GetTeamsWithoutManager()
+    {
+        var teams =
+            await _adminService.GetTeamsWithoutManagerAsync();
+
+        return Ok(teams);
+    }
+
+    [HttpPut("assign-manager")]
+    public async Task<IActionResult> AssignManager(
+        AssignManagerDto request)
+    {
+        await _adminService.AssignManagerAsync(request);
+
+        return Ok("Manager assigned successfully.");
     }
 }

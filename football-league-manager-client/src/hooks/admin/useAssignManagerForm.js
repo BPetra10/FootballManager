@@ -1,9 +1,8 @@
 import { useForm } from "../common/useForm";
 
-import { createLeague } from "../../services/admin/adminLeagueService";
-import { validateLeague } from "../../validators/leagueValidator";
+import { assignManager } from "../../services/admin/adminManagerService";
 
-export function useLeagueForm(onSuccess) {
+export function useAssignManagerForm(onSuccess) {
 
     const {
 
@@ -24,9 +23,8 @@ export function useLeagueForm(onSuccess) {
 
     } = useForm({
 
-        name: "",
-        country: "",
-        maxTeams: ""
+        managerId: "",
+        teamId: ""
 
     });
 
@@ -36,8 +34,21 @@ export function useLeagueForm(onSuccess) {
 
         setGeneralError("");
 
-        const validationErrors =
-            validateLeague(formData);
+        const validationErrors = {};
+
+        if (!formData.managerId) {
+
+            validationErrors.managerId =
+                "Please select a manager.";
+
+        }
+
+        if (!formData.teamId) {
+
+            validationErrors.teamId =
+                "Please select a team.";
+
+        }
 
         if (Object.keys(validationErrors).length > 0) {
 
@@ -49,18 +60,10 @@ export function useLeagueForm(onSuccess) {
 
         try {
 
-            await createLeague({
-
-                name: formData.name,
-
-                country: formData.country,
-
-                maxTeams: Number(formData.maxTeams)
-
-            });
+            await assignManager(formData);
 
             setSuccessMessage(
-                "League created successfully!"
+                "Manager assigned successfully!"
             );
 
             setTimeout(async () => {
@@ -71,7 +74,7 @@ export function useLeagueForm(onSuccess) {
 
                 await onSuccess?.();
 
-            }, 2000);
+            }, 1800);
 
         }
 
@@ -80,7 +83,7 @@ export function useLeagueForm(onSuccess) {
             setGeneralError(
 
                 error?.message ??
-                "Failed to create league."
+                "Failed to assign manager."
 
             );
 
