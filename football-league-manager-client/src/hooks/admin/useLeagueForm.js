@@ -1,13 +1,23 @@
+import { useEffect } from "react";
+
 import { useForm } from "../common/useForm";
 
-import { createLeague } from "../../services/admin/adminLeagueService";
+import {
+    createLeague,
+    updateLeague
+} from "../../services/admin/adminLeagueService";
+
 import { validateLeague } from "../../validators/leagueValidator";
 
-export function useLeagueForm(onSuccess) {
+export function useLeagueForm(
+    onSuccess,
+    selectedLeague = null
+) {
 
     const {
 
         formData,
+        setFormData,
 
         errors,
         setErrors,
@@ -19,7 +29,6 @@ export function useLeagueForm(onSuccess) {
         setSuccessMessage,
 
         handleChange,
-
         resetForm
 
     } = useForm({
@@ -29,6 +38,31 @@ export function useLeagueForm(onSuccess) {
         maxTeams: ""
 
     });
+
+    useEffect(() => {
+
+        if (selectedLeague) {
+
+            setFormData({
+
+                name: selectedLeague.name ?? "",
+                country: selectedLeague.country ?? "",
+                maxTeams: selectedLeague.maxTeams ?? ""
+
+            });
+
+            setErrors({});
+            setGeneralError("");
+            setSuccessMessage("");
+
+        }
+        else {
+
+            resetForm();
+
+        }
+
+    }, [selectedLeague]);
 
     const handleSubmit = async (event) => {
 
@@ -49,7 +83,7 @@ export function useLeagueForm(onSuccess) {
 
         try {
 
-            await createLeague({
+            const leagueData = {
 
                 name: formData.name,
 
@@ -57,11 +91,29 @@ export function useLeagueForm(onSuccess) {
 
                 maxTeams: Number(formData.maxTeams)
 
-            });
+            };
 
-            setSuccessMessage(
-                "League created successfully!"
-            );
+            if (selectedLeague) {
+
+                await updateLeague(
+                    selectedLeague.id,
+                    leagueData
+                );
+
+                setSuccessMessage(
+                    "League updated successfully!"
+                );
+
+            }
+            else {
+
+                await createLeague(leagueData);
+
+                setSuccessMessage(
+                    "League created successfully!"
+                );
+
+            }
 
             setTimeout(async () => {
 
@@ -71,7 +123,7 @@ export function useLeagueForm(onSuccess) {
 
                 await onSuccess?.();
 
-            }, 2000);
+            }, 1800);
 
         }
 
@@ -80,7 +132,11 @@ export function useLeagueForm(onSuccess) {
             setGeneralError(
 
                 error?.message ??
-                "Failed to create league."
+                (
+                    selectedLeague
+                        ? "Failed to update league."
+                        : "Failed to create league."
+                )
 
             );
 
@@ -97,6 +153,8 @@ export function useLeagueForm(onSuccess) {
         generalError,
 
         successMessage,
+
+        isEditMode: !!selectedLeague,
 
         handleChange,
 

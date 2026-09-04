@@ -70,7 +70,15 @@ export async function updateLeague(id, leagueData) {
 
         const error = await response.text();
 
-        throw new Error(error || "Failed to update league.");
+        if (error.includes("League already exists.")) {
+
+            throw new Error("League already exists.");
+
+        }
+
+        throw new Error(
+            error || "Failed to update league."
+        );
 
     }
 

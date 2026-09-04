@@ -12,6 +12,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AdminPage from "./pages/Admin/AdminPage";
 import MyTeamPage from "./pages/Manager/MyTeamPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import LeagueManagementPage from "./pages/Admin/LeagueManagementPage";
 
 import Header from "./components/layout/Header";
 
@@ -48,6 +49,15 @@ function App() {
                         element={
                             <ProtectedRoute role="Admin">
                                 <AdminPage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/admin/leagues"
+                        element={
+                            <ProtectedRoute role="Admin">
+                                <LeagueManagementPage />
                             </ProtectedRoute>
                         }
                     />

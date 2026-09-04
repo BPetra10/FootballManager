@@ -1,10 +1,15 @@
 function TableRow({
     row,
     columns,
-    onRowClick
+    onRowClick,
+    actions
 }) {
 
-    const clickable = typeof onRowClick === "function";
+    const clickable =
+        typeof onRowClick === "function";
+
+    const hasActions =
+        typeof actions === "function";
 
     return (
 
@@ -40,6 +45,20 @@ function TableRow({
                 </td>
 
             ))}
+
+            {hasActions && (
+
+                <td
+                    className="table-actions-cell"
+                    data-label="Actions"
+                    onClick={event => event.stopPropagation()}
+                >
+
+                    {actions(row)}
+
+                </td>
+
+            )}
 
         </tr>
 

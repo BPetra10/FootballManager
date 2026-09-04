@@ -6,11 +6,23 @@ import ErrorAlert from "../../common/ErrorAlert/ErrorAlert";
 
 function LeagueForm({ form }) {
 
+    const title = form.isEditMode
+        ? "Edit League"
+        : "Create League";
+
+    const subtitle = form.isEditMode
+        ? "Update the league information."
+        : "Create a new football league.";
+
+    const buttonText = form.isEditMode
+        ? "Save Changes"
+        : "Create League";
+
     return (
 
         <FormCard
-            title="Create League"
-            subtitle="Create a new football league."
+            title={title}
+            subtitle={subtitle}
             hideHeader={!!form.successMessage}
         >
 
@@ -74,7 +86,7 @@ function LeagueForm({ form }) {
                             variant="filled"
                         >
 
-                            Create League
+                            {buttonText}
 
                         </Button>
 

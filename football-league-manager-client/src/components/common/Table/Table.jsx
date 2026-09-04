@@ -6,8 +6,11 @@ function Table({
     columns,
     data,
     onRowClick,
+    actions,
     emptyMessage = "No data available."
 }) {
+
+    const hasActions = typeof actions === "function";
 
     return (
 
@@ -27,6 +30,14 @@ function Table({
 
                         ))}
 
+                        {hasActions && (
+
+                            <th className="table-actions-header">
+                                Actions
+                            </th>
+
+                        )}
+
                     </tr>
 
                 </thead>
@@ -39,7 +50,10 @@ function Table({
 
                             <td
                                 className="table-empty"
-                                colSpan={columns.length}
+                                colSpan={
+                                    columns.length +
+                                    (hasActions ? 1 : 0)
+                                }
                             >
                                 {emptyMessage}
                             </td>
@@ -55,6 +69,7 @@ function Table({
                                 row={row}
                                 columns={columns}
                                 onRowClick={onRowClick}
+                                actions={actions}
                             />
 
                         ))
